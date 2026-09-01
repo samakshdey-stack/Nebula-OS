@@ -1,0 +1,137 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account profile and authentication state",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_-]+$" },
+        "email": { "type": "string", "format": "email", "maxLength": 256 },
+        "displayName": { "type": "string", "maxLength": 128 },
+        "photoURL": { "type": "string", "maxLength": 1024 },
+        "role": { "type": "string", "enum": ["Team Lead", "Frontend Specialist", "Cybersecurity", "Researcher", "Data Analytics", "Member", "Admin"] },
+        "createdAt": { "type": "string", "maxLength": 64 },
+        "lastLoginAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "email", "displayName"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "Hackathon and space constellation project record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_-]+$" },
+        "name": { "type": "string", "maxLength": 128 },
+        "codename": { "type": "string", "maxLength": 64 },
+        "hackathon": { "type": "string", "maxLength": 128 },
+        "description": { "type": "string", "maxLength": 2048 },
+        "status": { "type": "string", "enum": ["ACTIVE", "COMPLETED", "AT_RISK", "CRITICAL", "ARCHIVED"] },
+        "progress": { "type": "number" },
+        "health": { "type": "string", "enum": ["ON_TRACK", "AT_RISK", "DELAYED", "COMPLETED"] },
+        "deadline": { "type": "string", "maxLength": 64 },
+        "createdAt": { "type": "string", "maxLength": 64 },
+        "leadId": { "type": "string", "maxLength": 128 },
+        "ownerId": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["id", "name", "status", "progress", "health", "ownerId"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "Sprint deliverable or DAG task item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_-]+$" },
+        "projectId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_-]+$" },
+        "title": { "type": "string", "maxLength": 256 },
+        "description": { "type": "string", "maxLength": 4096 },
+        "status": { "type": "string", "enum": ["BACKLOG", "TODO", "IN_PROGRESS", "BLOCKED", "DONE"] },
+        "priority": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+        "assigneeId": { "type": "string", "maxLength": 128 },
+        "deadline": { "type": "string", "maxLength": 64 },
+        "createdAt": { "type": "string", "maxLength": 64 },
+        "ownerId": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["id", "projectId", "title", "status", "priority", "ownerId"]
+    },
+    "ActivityLog": {
+      "title": "ActivityLog",
+      "description": "Audit and telemetry activity log item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_-]+$" },
+        "action": { "type": "string", "maxLength": 256 },
+        "details": { "type": "string", "maxLength": 2048 },
+        "entityType": { "type": "string", "maxLength": 64 },
+        "status": { "type": "string", "maxLength": 64 },
+        "projectId": { "type": "string", "maxLength": 128 },
+        "timestamp": { "type": "string", "maxLength": 64 },
+        "ownerId": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["id", "action", "ownerId"]
+    },
+    "ProjectDatabaseRecord": {
+      "title": "ProjectDatabaseRecord",
+      "description": "Structured project document and spreadsheet data retrieved from Google Drive and stored in database",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_-]+$" },
+        "projectId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_-]+$" },
+        "title": { "type": "string", "maxLength": 256 },
+        "sourceType": { "type": "string", "maxLength": 64 },
+        "category": { "type": "string", "maxLength": 64 },
+        "fileId": { "type": "string", "maxLength": 256 },
+        "mimeType": { "type": "string", "maxLength": 128 },
+        "summary": { "type": "string", "maxLength": 8192 },
+        "content": { "type": "string", "maxLength": 1048576 },
+        "lastSyncedAt": { "type": "string", "maxLength": 64 },
+        "syncStatus": { "type": "string", "maxLength": 64 },
+        "ownerId": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["id", "projectId", "title", "sourceType", "ownerId"]
+    },
+    "TeamChatMessage": {
+      "title": "TeamChatMessage",
+      "description": "Team group chat message supporting text, audio waveforms, video previews, quotes, and reactions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_-]+$" },
+        "channelId": { "type": "string", "maxLength": 128 },
+        "senderId": { "type": "string", "maxLength": 128 },
+        "senderName": { "type": "string", "maxLength": 128 },
+        "senderAvatar": { "type": "string", "maxLength": 1024 },
+        "content": { "type": "string", "maxLength": 10000 },
+        "type": { "type": "string", "enum": ["text", "image", "video", "audio", "file", "system", "sticker"] },
+        "timestamp": { "type": "string", "maxLength": 64 },
+        "createdAtMs": { "type": "number" },
+        "ownerId": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["id", "senderId", "senderName", "type"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Stores private user account information and authentication state"
+    },
+    "/projects/{projectId}": {
+      "schema": "Project",
+      "description": "User created projects and missions"
+    },
+    "/tasks/{taskId}": {
+      "schema": "Task",
+      "description": "User tasks and sprint backlog items"
+    },
+    "/activities/{activityId}": {
+      "schema": "ActivityLog",
+      "description": "User telemetry and action logs"
+    },
+    "/project_databases/{recordId}": {
+      "schema": "ProjectDatabaseRecord",
+      "description": "Project documents, specifications, and spreadsheet matrix data stored directly in database"
+    },
+    "/team_messages/{messageId}": {
+      "schema": "TeamChatMessage",
+      "description": "Persistent team group chat messages and real-time comms feed"
+    }
+  }
+}

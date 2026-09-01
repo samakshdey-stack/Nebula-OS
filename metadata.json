@@ -1,0 +1,8 @@
+{
+  "name": "Remix  NEBULA OS",
+  "description": "Native organizational operating system and cosmic command platform for the Nebula Hackathon Team.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

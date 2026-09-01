@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // User Profile Collection
+    match /users/{userId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isOwner(userId);
+    }
+
+    // Projects Collection
+    match /projects/{projectId} {
+      allow read: if isSignedIn();
+      allow create, update, delete: if isSignedIn();
+    }
+
+    // Tasks Collection
+    match /tasks/{taskId} {
+      allow read: if isSignedIn();
+      allow create, update, delete: if isSignedIn();
+    }
+
+    // Activities Collection
+    match /activities/{activityId} {
+      allow read: if isSignedIn();
+      allow create, update, delete: if isSignedIn();
+    }
+
+    // Project Databases Collection (Retrieved and stored documents & spreadsheets)
+    match /project_databases/{recordId} {
+      allow read: if isSignedIn();
+      allow create, update, delete: if isSignedIn();
+    }
+
+    // Team Group Chat Messages Collection
+    match /team_messages/{messageId} {
+      allow read: if true;
+      allow create, update, delete: if true;
+    }
+
+    // Connection testing endpoint
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+  }
+}
